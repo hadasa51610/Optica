@@ -11,18 +11,14 @@ namespace Optica.Controllers
     public class UserController : ControllerBase
     {
         readonly UserService userService;
-        public UserController()
-        {
-            userService = new UserService();
-        }
+        public UserController(UserService user) => userService = user;
 
         // GET: api/<UserController>
         [HttpGet]
         public ActionResult<List<User>> Get()
         {
             List<User> users = userService.GetAll();
-            if(users == null) return NotFound();
-            return Ok(users);
+            return users == null ? NotFound() : users;
         }
 
         // GET api/<UserController>/5
@@ -30,34 +26,36 @@ namespace Optica.Controllers
         public ActionResult<User> Get(string userId)
         {
             User user = userService.GetByUserId(userId);
-            if(user == null) return NotFound();
-            return Ok(user);
+            return user == null ? NotFound() : user;
         }
 
         // POST api/<UserController>
         [HttpPost]
         public ActionResult Post([FromBody] User user)
         {
-            userService.PostUser(user);
-            return Ok();
+            if (user == null) return BadRequest("User data is required.");
+            if (userService.PostUser(user)) return Ok();
+            return StatusCode(500, "Failed to create the user.");
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{userId}")]
         public ActionResult Put(string userId, [FromBody] User user)
         {
-            if(Get(userId)==null) return NotFound();
-            userService.PutUser(userId,user);
-            return Ok();
+            if (userId == null) return BadRequest();
+            if (userService.GetByUserId(userId) == null) return NotFound();
+            if(userService.PutUser(userId, user)) return Ok();
+            return StatusCode(500, "Failed to update the user.");
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{userId}")]
         public ActionResult Delete(string userId)
         {
-            if(Get(userId)==null) return NotFound();
-            userService.DeleteUser(userId);
-            return Ok();
+            if(userId == null) return BadRequest();
+            if (userService.GetByUserId(userId) == null) return NotFound();
+            if (userService.DeleteUser(userId)) return Ok();
+            return StatusCode(500, "Failed to delete the user.");
         }
     }
 }

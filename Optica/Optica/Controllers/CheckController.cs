@@ -11,29 +11,22 @@ namespace Optica.Controllers
     public class CheckController : ControllerBase
     {
         readonly CheckService checks;
-        public CheckController()
-        {
-            checks=new CheckService();
-        }
+        public CheckController() => checks = new CheckService();
 
         // GET: api/<CheckController>
         [HttpGet]
         public ActionResult<List<Checks>> Get()
         {
-            List<Checks> check = checks.GetAll();
-            if(check==null)
-                return NotFound();
-            return Ok(check);
+            List<Checks> checkList = checks.GetAll();
+            return checkList == null ? NotFound() : checkList;
         }
 
         // GET api/<CheckController>/5
-        [HttpGet("{code}")]
-        public ActionResult<Checks> Get(int code)
+        [HttpGet("{checkCode}")]
+        public ActionResult<Checks> Get(int checkCode)
         {
-            Checks check = checks.GetById(code);
-            if (check == null)
-                return NotFound();
-            return Ok(check);
+            Checks check = checks.GetByCode(checkCode);
+            return check == null ? NotFound() : check;
         }
 
         // POST api/<CheckController>
@@ -45,22 +38,20 @@ namespace Optica.Controllers
         }
 
         // PUT api/<CheckController>/5
-        [HttpPut("{code}")]
-        public ActionResult Put(int code, [FromBody] Checks check)
+        [HttpPut("{checkCode}")]
+        public ActionResult Put(int checkCode, [FromBody] Checks check)
         {
-            if(checks.GetById(code) == null)
-                return NotFound();
-            checks.PutCheck(code,check);
+            if (checks.GetByCode(checkCode) == null) return NotFound();
+            checks.PutCheck(checkCode, check);
             return Ok();
         }
 
         // DELETE api/<CheckController>/5
-        [HttpDelete("{code}")]
-        public ActionResult Delete(int code)
+        [HttpDelete("{checkCode}")]
+        public ActionResult Delete(int checkCode)
         {
-            if (checks.GetById(code) == null)
-                return NotFound();
-            checks.DeleteCheck(code);
+            if (checks.GetByCode(checkCode) == null) return NotFound();
+            checks.DeleteCheck(checkCode);
             return Ok();
         }
     }

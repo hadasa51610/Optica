@@ -1,49 +1,29 @@
 ﻿using Optica.Entities;
+
 namespace Optica.Services
 {
     public class CheckService
     {
-        static List<Checks> Checks { get; }
-        public CheckService() { }
-        static CheckService()
+        public List<Checks> GetAll() => DataContextManager.Data.ChecksList;
+
+        public Checks GetByCode(int code) => DataContextManager.Data.ChecksList.FirstOrDefault<Checks>(c => c.Code == code);
+
+        public void PostCheck(Checks check) => DataContextManager.Data.ChecksList.Add(check);
+
+        public void PutCheck(int code, Checks check)
         {
-            Checks = new List<Checks>();
-        }
-        public List<Checks> GetAll()
-        {
-            return Checks;
-        }
-        public Checks GetById(int code)
-        {
-            foreach (var check in Checks)
+            int index = DataContextManager.Data.ChecksList.FindIndex((c) => c.Code == code);
+            if (index != -1)
             {
-                if(check.Code==code)
-                    return check;
-            }
-            return null;
-        }
-        public void PostCheck(Checks check)
-        {
-            Checks.Add(check);
-        }
-        public void PutCheck(int code,Checks check)
-        {
-            for (int i = 0; i < Checks.Count(); i++)
-            {
-                if (Checks[i].Code == code)
-                    Checks[i]=check;
+                DataContextManager.Data.ChecksList[index].UserId = check.UserId;
+                DataContextManager.Data.ChecksList[index].CheckerId = check.CheckerId;
+                DataContextManager.Data.ChecksList[index].CheckDate = check.CheckDate;
+                DataContextManager.Data.ChecksList[index].Branch = check.Branch;
+                DataContextManager.Data.ChecksList[index].Number = check.Number;
+                DataContextManager.Data.ChecksList[index].NeedGlass = check.NeedGlass;
             }
         }
-        public void DeleteCheck(int code)
-        {
-            foreach (var check in Checks)
-            {
-                if (check.Code == code)
-                {
-                    Checks.Remove(check);
-                    return;
-                }
-            }
-        }
+
+        public void DeleteCheck(int code) => DataContextManager.Data.ChecksList.Remove(GetByCode(code));
     }
 }

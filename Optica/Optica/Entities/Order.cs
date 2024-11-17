@@ -12,17 +12,5 @@
         public DateTime OrederDate { get; set; }
         public int ItemsNumber { get; set; }
         public PlaceOrder EPlaceOrder { get; set; }
-        List<Model> ModelsInOrder { get; set; }
-        public Order(int code, string userId, double totalPrice, Payment ePayment, string receptionNumber, DateTime orederDate, int itemsNumber, PlaceOrder ePlaceOrder)
-        {
-            Code = code;
-            UserId = userId;
-            TotalPrice = totalPrice;
-            EPayment = ePayment;
-            ReceptionNumber = receptionNumber;
-            OrederDate = orederDate;
-            ItemsNumber = itemsNumber;
-            EPlaceOrder = ePlaceOrder;
-        }
     }
 }

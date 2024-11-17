@@ -11,28 +11,22 @@ namespace Optica.Controllers
     public class OrderController : ControllerBase
     {
         readonly OrderService orderService;
-        public OrderController()
-        {
-            orderService = new OrderService();
-        }
+        public OrderController() => orderService = new OrderService();
+
         // GET: api/<OrderController>
         [HttpGet]
         public ActionResult<List<Order>> Get()
         {
             List<Order> orders = orderService.GetAll();
-            if (orders == null)
-                return NotFound();
-            return Ok(orders);
+            return orders == null ? NotFound() : orders;
         }
 
         // GET api/<OrderController>/5
-        [HttpGet("{code}")]
-        public ActionResult<Order> Get(int code)
+        [HttpGet("{orderCode}")]
+        public ActionResult<Order> Get(int orderCode)
         {
-            Order order = orderService.GetByCode(code);
-            if (order == null)
-                return NotFound();
-            return Ok(order);
+            Order order = orderService.GetByCode(orderCode);
+            return order == null ? NotFound() : order;
         }
 
         // POST api/<OrderController>
@@ -44,22 +38,20 @@ namespace Optica.Controllers
         }
 
         // PUT api/<OrderController>/5
-        [HttpPut("{code}")]
-        public ActionResult Put(int code, [FromBody] Order order)
+        [HttpPut("{orderCode}")]
+        public ActionResult Put(int orderCode, [FromBody] Order order)
         {
-            if (orderService.GetByCode(code) == null)
-                return NotFound();
-            orderService.PutOrder(code, order);
+            if (orderService.GetByCode(orderCode) == null) return NotFound();
+            orderService.PutOrder(orderCode, order);
             return Ok();
         }
 
         // DELETE api/<OrderController>/5
-        [HttpDelete("{code}")]
-        public ActionResult Delete(int code)
+        [HttpDelete("{orderCode}")]
+        public ActionResult Delete(int orderCode)
         {
-            if (orderService.GetByCode(code) == null)
-                return NotFound();
-            orderService.DeleteOrder(code);
+            if (orderService.GetByCode(orderCode) == null) return NotFound();
+            orderService.DeleteOrder(orderCode);
             return Ok();
         }
     }

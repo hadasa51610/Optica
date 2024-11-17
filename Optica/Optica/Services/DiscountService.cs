@@ -4,46 +4,24 @@ namespace Optica.Services
 {
     public class DiscountService
     {
-        static List<Discount> Discounts { get; }
-        public DiscountService() { }
-        static DiscountService() { 
-            Discounts = new List<Discount>();
-        }
-        public List<Discount> GetAll()
+        public List<Discount> GetAll() => DataContextManager.Data.Discounts;
+
+        public Discount GetByDiscountId(string id) => DataContextManager.Data.Discounts.FirstOrDefault<Discount>(d => d.DiscountId == id);
+
+        public void PostDiscount(Discount discount) => DataContextManager.Data.Discounts.Add(discount);
+
+        public void PutDiscount(string id, Discount discount)
         {
-            return Discounts;
-        }
-        public Discount GetByDiscountId(string id)
-        {
-            foreach (var discount in Discounts)
+            int index = DataContextManager.Data.Discounts.FindIndex(d => d.DiscountId == id);
+            if (index != -1)
             {
-                if(discount.DiscountId==id)
-                    return discount;
-            }
-            return null;
-        }
-        public void PostDiscount(Discount discount)
-        {
-            Discounts.Add(discount);
-        }
-        public void PutDiscount(string id,Discount discount)
-        {
-            for (int i = 0; i < Discounts.Count; i++)
-            {
-                if (Discounts[i].DiscountId == id)
-                    Discounts[i] = discount;
+                DataContextManager.Data.Discounts[index].DiscountAmount = discount.DiscountAmount;
+                DataContextManager.Data.Discounts[index].Rules = discount.Rules;
+                DataContextManager.Data.Discounts[index].EAge = discount.EAge;
+                DataContextManager.Data.Discounts[index].ESickFundName = discount.ESickFundName;
+                DataContextManager.Data.Discounts[index].SickFundId = discount.SickFundId;
             }
         }
-        public void DeleteDiscount(string id)
-        {
-            foreach (var discount in Discounts)
-            {
-                if (discount.DiscountId == id)
-                {
-                    Discounts.Remove(discount);
-                    return;
-                }
-            }
-        }
+        public void DeleteDiscount(string id) => DataContextManager.Data.Discounts.Remove(GetByDiscountId(id));
     }
 }

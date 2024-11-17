@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Optica.Entities;
 using Optica.Services;
-using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,27 +11,22 @@ namespace Optica.Controllers
     public class DiscountController : ControllerBase
     {
         readonly DiscountService discount;
-        public DiscountController()
-        {
-            discount = new DiscountService();
-        }
+        public DiscountController() => discount = new DiscountService();
 
         // GET: api/<DiscountController>
         [HttpGet]
         public ActionResult<List<Discount>> Get()
         {
             List<Discount> discounts = discount.GetAll();
-            if (discounts == null) return NotFound();
-            return Ok(discounts);
+            return discounts == null ? NotFound() : discounts;
         }
 
         // GET api/<DiscountController>/5
-        [HttpGet("{id}")]
-        public ActionResult<Discount> Get(string id)
+        [HttpGet("{discountId}")]
+        public ActionResult<Discount> Get(string discountId)
         {
-            Discount dis=discount.GetByDiscountId(id);
-            if(dis==null) return NotFound();
-            return Ok(dis);
+            Discount dis = discount.GetByDiscountId(discountId);
+            return dis == null ? NotFound() : dis;
         }
 
         // POST api/<DiscountController>
@@ -44,20 +38,20 @@ namespace Optica.Controllers
         }
 
         // PUT api/<DiscountController>/5
-        [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromBody] Discount dis)
+        [HttpPut("{discountId}")]
+        public ActionResult Put(string discountId, [FromBody] Discount dis)
         {
-            if(Get(id)==null) return NotFound();
-            discount.PutDiscount(id,dis);
+            if (discount.GetByDiscountId(discountId) == null) return NotFound();
+            discount.PutDiscount(discountId, dis);
             return Ok();
         }
 
         // DELETE api/<DiscountController>/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(string id)
+        [HttpDelete("{discountId}")]
+        public ActionResult Delete(string discountId)
         {
-            if (Get(id) == null) return NotFound();
-            discount.DeleteDiscount(id);
+            if (discount.GetByDiscountId(discountId) == null) return NotFound();
+            discount.DeleteDiscount(discountId);
             return Ok();
         }
     }

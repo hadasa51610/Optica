@@ -4,47 +4,26 @@ namespace Optica.Services
 {
     public class OrderService
     {
-        static List<Order> Orders { get; }
-        public OrderService() { }
-        static OrderService()
-        {
-            Orders = new List<Order>();
-        }
-        public List<Order> GetAll()
-        {
-            return Orders;
-        }
-        public Order GetByCode(int code)
-        {
-            foreach (var item in Orders)
-            {
-                if(item.Code==code)
-                    return item;
-            }
-            return null;
-        }
-        public void PostOrder(Order order)
-        {
-            Orders.Add(order);
-        }
+        public List<Order> GetAll() => DataContextManager.Data.Orders;
+
+        public Order GetByCode(int code) => DataContextManager.Data.Orders.FirstOrDefault<Order>((order) => order.Code == code);
+
+        public void PostOrder(Order order) => DataContextManager.Data.Orders.Add(order);
+
         public void PutOrder(int code, Order order)
         {
-            for (int i = 0; i < Orders.Count; i++)
+            int index = DataContextManager.Data.Orders.FindIndex(order => order.Code == code);
+            if (index != -1)
             {
-                if (Orders[i].Code==code)
-                    Orders[i]=order;
+                DataContextManager.Data.Orders[index].EPayment = order.EPayment;
+                DataContextManager.Data.Orders[index].ItemsNumber = order.ItemsNumber;
+                DataContextManager.Data.Orders[index].UserId = order.UserId;
+                DataContextManager.Data.Orders[index].ReceptionNumber = order.ReceptionNumber;
+                DataContextManager.Data.Orders[index].EPlaceOrder = order.EPlaceOrder;
+                DataContextManager.Data.Orders[index].TotalPrice = order.TotalPrice;
+                DataContextManager.Data.Orders[index].OrederDate = order.OrederDate;
             }
         }
-        public void DeleteOrder(int code)
-        {
-            foreach (var item in Orders)
-            {
-                if(item.Code==code)
-                {
-                    Orders.Remove(item);
-                    return;
-                }
-            }
-        }
+        public void DeleteOrder(int code) => DataContextManager.Data.Orders.Remove(GetByCode(code));
     }
 }

@@ -11,6 +11,5 @@
         public double DiscountAmount { get; set; }
         public Age EAge { get; set; }
         public string Rules { get; set; }
-        public List<Model> Models { get; set; }
     }
 }

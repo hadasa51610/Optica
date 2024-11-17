@@ -5,52 +5,25 @@ namespace Optica.Services
 {
     public class ModelService
     {
-        static List<Model> Models { get;}
-        public ModelService() { }
-        static ModelService()
-        {
-            Models=new List<Model>();
-            Models.Add(new Model(1,"111","red","thin",2.5,"circle",Sort.INCREASE,Target.BABY));
-            Models.Add(new Model(2,"222","blue","thin",3.5,"circle",Sort.INCREASE,Target.OLDER));
-        }
-        public List<Model> GetAll()
-        {
-            return Models;
-        }
-        public Model GetById(string id)
-        {
-            foreach (var model in Models)
-            {
-                if (model.Id == id)
-                    return model;
-            }
-            return null;
-        }
-        public void PostModel(Model model)
-        {
-            Models.Add(model);
-        }
+        public List<Model> GetAll() => DataContextManager.Data.Models;
+
+        public Model GetById(string id) => DataContextManager.Data.Models.FirstOrDefault<Model>((model) => model.Id == id);
+
+        public void PostModel(Model model) => DataContextManager.Data.Models.Add(model);
+
         public void PutModel(string id, Model model)
         {
-            for (int i = 0; i < Models.Count(); i++)
+            int index = DataContextManager.Data.Models.FindIndex((model) => model.Id == id);
+            if (index != -1)
             {
-                if (Models[i].Id == id)
-                {
-                    Models[i] = model;
-                    return;
-                }
+                DataContextManager.Data.Models[index].Shape = model.Shape;
+                DataContextManager.Data.Models[index].Scop=model.Scop;
+                DataContextManager.Data.Models[index].Color = model.Color;
+                DataContextManager.Data.Models[index].GlassSort=model.GlassSort;
+                DataContextManager.Data.Models[index].GlassTarget=model.GlassTarget;
+                DataContextManager.Data.Models[index].Description=model.Description;
             }
         }
-        public void DeleteModel(string id)
-        {
-            foreach (var model in Models)
-            {
-                if (model.Id == id)
-                {
-                    Models.Remove(model);
-                    return;
-                }
-            }
-        }
+        public void DeleteModel(string id) => DataContextManager.Data.Models.Remove(GetById(id));
     }
 }

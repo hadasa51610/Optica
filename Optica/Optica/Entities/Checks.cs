@@ -1,6 +1,4 @@
-﻿using Optica.Services;
-
-namespace Optica.Entities
+﻿namespace Optica.Entities
 {
     public class Checks
     {
@@ -11,21 +9,5 @@ namespace Optica.Entities
         public DateTime CheckDate { get; set; }
         public bool NeedGlass { get; set; }
         public double Number { get; set; }
-
-        public Checks(int code, string userId, string checkerId, string branch, DateTime checkDate, bool needGlass, double number)
-        {
-            Code = code;
-            UserId = userId;
-            CheckerId = checkerId;
-            Branch = branch;
-            CheckDate = checkDate;
-            NeedGlass = needGlass;
-            Number = number;
-        }
-
-        public static implicit operator Checks(CheckService v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
