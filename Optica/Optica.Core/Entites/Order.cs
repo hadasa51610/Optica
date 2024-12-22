@@ -10,7 +10,8 @@ namespace Optica.Core.Entites
     public enum PlaceOrder { SHOP, PHONE, SITE }
     public class Order
     {
-        public string Code { get; set; }
+        public int OrderId { get; set; }
+        public string OrderCode { get; set; }
         public string UserId { get; set; }
         public double TotalPrice { get; set; }
         public string ReceptionNumber { get; set; }

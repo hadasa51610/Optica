@@ -17,21 +17,18 @@ namespace Optica.Data.Repositories
         }
         public List<Order> GetAll()
         {
-            return _context.LoadOrder();
+            return _context.orders.ToList();
         }
 
         public Order GetById(string orderCode)
         {
-            return _context.LoadOrder().FirstOrDefault<Order>((o) => o.Code == orderCode);
+            return _context.orders.FirstOrDefault<Order>((o) => o.OrderCode == orderCode);
         }
 
         public bool Update(string orderCode, Order order)
         {
-            List<Order> orders = _context.LoadOrder();
-            Order findOrder = orders.Find((o) => o.Code == orderCode);
-            if (findOrder == null) return false;
-            Order updateOrder = findOrder;
-            orders.Remove(findOrder);
+            Order updateOrder = _context.orders.ToList().Find((o) => o.OrderCode == orderCode);
+            if (updateOrder == null) return false;
             updateOrder.OrederDate = order.OrederDate;
             updateOrder.EPlaceOrder = order.EPlaceOrder;
             updateOrder.ItemsNumber = order.ItemsNumber;
@@ -39,23 +36,26 @@ namespace Optica.Data.Repositories
             updateOrder.TotalPrice = order.TotalPrice;
             updateOrder.ReceptionNumber = order.ReceptionNumber;
             updateOrder.EPayment = order.EPayment;
-            return (_context.SaveOrders(orders));
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Delete(string orderCode)
         {
-            List<Order> orders = _context.LoadOrder();
-            orders.Remove(orders.Find((o) => o.Code == orderCode));
-            return _context.SaveOrders(orders);
+            Order order = _context.orders.ToList().Find((o) => o.OrderCode == orderCode);
+            if(order == null) return false;
+            _context.orders.Remove(order);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Add(Order order)
         {
-            List<Order> orders = _context.LoadOrder();
-            Order order1 = orders.Find((o) => o.Code == order.Code);
+            Order order1 = _context.orders.ToList().Find((o) => o.OrderCode == order.OrderCode);
             if (order1 != null) return true;
-            orders.Add(order);
-            return (_context.SaveOrders(orders));
+            _context.orders.Add(order);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

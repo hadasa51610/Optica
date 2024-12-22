@@ -13,48 +13,48 @@ namespace Optica.Data.Repositories
         private readonly DataContext _context;
         public ModelRepository(DataContext dataContext)
         {
-            _context=dataContext;
+            _context = dataContext;
         }
 
         public List<Model> GetAll()
         {
-            return _context.LoadModel();
+            return _context.models.ToList();
         }
 
         public Model GetById(string modelId)
         {
-            return _context.LoadModel().FirstOrDefault<Model>((m) => m.Id == modelId);
+            return _context.models.FirstOrDefault<Model>((m) => m.Id == modelId);
         }
 
         public bool Add(Model model)
         {
-            List<Model> models = _context.LoadModel();
-            Model model1 = models.FirstOrDefault<Model>((m) => m.Id == model.Id);
+            Model model1 = _context.models.ToList().FirstOrDefault<Model>((m) => m.Id == model.Id);
             if (model1 != null) return true;
-            models.Add(model);
-            return _context.SaveModel(models);
+            _context.models.Add(model);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Update(string modelId, Model model)
         {
-            List<Model> models = _context.LoadModel();
-            Model updateModel=models.FirstOrDefault(model => model.Id == modelId);
-            if(updateModel == null) return false;
+            Model updateModel = _context.models.ToList().FirstOrDefault(model => model.Id == modelId);
+            if (updateModel == null) return false;
             updateModel.Color = model.Color;
             updateModel.Description = model.Description;
             updateModel.Scop = model.Scop;
             updateModel.Shape = model.Shape;
             updateModel.GlassSort = model.GlassSort;
             updateModel.GlassTarget = model.GlassTarget;
-            return _context.SaveModel(models);
-    }
+            _context.SaveChanges();
+            return true;
+        }
         public bool Delete(string modelId)
         {
-            List<Model> models = _context.LoadModel();
-            Model model=models.FirstOrDefault<Model>((m) => m.Id == modelId);
+            Model model = _context.models.ToList().FirstOrDefault<Model>((m) => m.Id == modelId);
             if (model == null) return false;
-            models.Remove(model);
-            return _context.SaveModel(models);
+            _context.models.Remove(model);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

@@ -23,7 +23,8 @@ builder.Services.AddScoped<IService<Discount>,DiscountService>();
 builder.Services.AddScoped<IRepository<Discount>, DiscountRepository>();
 builder.Services.AddScoped<IService<Check>,CheckService>();
 builder.Services.AddScoped<IRepository<Check>, CheckRepository>();
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddDbContext<DataContext>();
+//builder.Services.AddSingleton<DataContext>();
 
 var app = builder.Build();
 

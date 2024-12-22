@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Optica.Data.Repositories
 {
-    public class UserRepository:IRepository<User>
+    public class UserRepository : IRepository<User>
     {
         private readonly DataContext _context;
         public UserRepository(DataContext context)
@@ -17,18 +17,17 @@ namespace Optica.Data.Repositories
         }
         public List<User> GetAll()
         {
-            return _context.LoadUsers();
+            return _context.users.ToList();
         }
 
         public User GetById(string userId)
         {
-            return _context.LoadUsers().FirstOrDefault<User>((u) => u.UserId == userId);
+            return _context.users.FirstOrDefault<User>((u) => u.UserId == userId);
         }
 
         public bool Update(string userId, User user)
         {
-            List<User> users = _context.LoadUsers();
-            User updateUser = users.Find((u) => u.UserId == userId);
+            User updateUser = _context.users.ToList().Find((u) => u.UserId == userId);
             if (updateUser == null) return false;
             updateUser.Address = user.Address;
             updateUser.Age = user.Age;
@@ -39,25 +38,26 @@ namespace Optica.Data.Repositories
             updateUser.Name = user.Name;
             updateUser.Mail = user.Mail;
             updateUser.Phone = user.Phone;
-            return (_context.SaveUsers(users));
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Delete(string userId)
         {
-            List<User> users = _context.LoadUsers();
-            User user = users.FirstOrDefault<User>(u => u.UserId == userId);
+            User user = _context.users.ToList().FirstOrDefault<User>(u => u.UserId == userId);
             if (user == null) return false;
-            users.Remove(user);
-            return _context.SaveUsers(users);
+            _context.users.Remove(user);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Add(User user)
         {
-            List<User> users = _context.LoadUsers();
-            User user1 = users.FirstOrDefault<User>(u => u.UserId == user.UserId);
+            User user1 = _context.users.ToList().FirstOrDefault<User>(u => u.UserId == user.UserId);
             if (user != null) return true;
-            users.Add(user);
-            return (_context.SaveUsers(users));
+            _context.users.Add(user);
+            _context.SaveChanges();
+            return true;
         }
     }
 }
