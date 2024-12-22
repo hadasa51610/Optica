@@ -1,0 +1,153 @@
+﻿[
+  {
+    "Code": 2001,
+    "UserId": "U001",
+    "CheckId": "C001",
+    "CheckerId": "CHK001",
+    "Branch": "Main",
+    "CheckDate": "2023-10-01T10:00:00Z",
+    "NeedGlass": true,
+    "Number": 1.5
+  },
+  {
+    "Code": 2002,
+    "UserId": "U002",
+    "CheckId": "C002",
+    "CheckerId": "CHK002",
+    "Branch": "Main",
+    "CheckDate": "2023-10-02T11:00:00Z",
+    "NeedGlass": false,
+    "Number": 2.0
+  },
+  {
+    "Code": 2003,
+    "UserId": "U003",
+    "CheckId": "C003",
+    "CheckerId": "CHK001",
+    "Branch": "Branch A",
+    "CheckDate": "2023-10-03T09:30:00Z",
+    "NeedGlass": true,
+    "Number": 1.0
+  },
+  {
+    "Code": 2004,
+    "UserId": "U004",
+    "CheckId": "C004",
+    "CheckerId": "CHK003",
+    "Branch": "Branch B",
+    "CheckDate": "2023-10-04T14:00:00Z",
+    "NeedGlass": false,
+    "Number": 3.5
+  },
+  {
+    "Code": 2005,
+    "UserId": "U005",
+    "CheckId": "C005",
+    "CheckerId": "CHK002",
+    "Branch": "Main",
+    "CheckDate": "2023-10-05T15:00:00Z",
+    "NeedGlass": true,
+    "Number": 4.0
+  },
+  {
+    "Code": 2006,
+    "UserId": "U006",
+    "CheckId": "C006",
+    "CheckerId": "CHK001",
+    "Branch": "Branch A",
+    "CheckDate": "2023-10-06T08:00:00Z",
+    "NeedGlass": false,
+    "Number": 2.5
+  },
+  {
+    "Code": 2007,
+    "UserId": "U007",
+    "CheckId": "C007",
+    "CheckerId": "CHK002",
+    "Branch": "Branch C",
+    "CheckDate": "2023-10-07T16:00:00Z",
+    "NeedGlass": true,
+    "Number": 1.2
+  },
+  {
+    "Code": 2008,
+    "UserId": "U008",
+    "CheckId": "C008",
+    "CheckerId": "CHK003",
+    "Branch": "Main",
+    "CheckDate": "2023-10-08T10:30:00Z",
+    "NeedGlass": false,
+    "Number": 5.0
+  },
+  {
+    "Code": 2009,
+    "UserId": "U009",
+    "CheckId": "C009",
+    "CheckerId": "CHK001",
+    "Branch": "Branch B",
+    "CheckDate": "2023-10-09T11:15:00Z",
+    "NeedGlass": true,
+    "Number": 3.0
+  },
+  {
+    "Code": 2010,
+    "UserId": "U010",
+    "CheckId": "C010",
+    "CheckerId": "CHK002",
+    "Branch": "Main",
+    "CheckDate": "2023-10-10T12:45:00Z",
+    "NeedGlass": false,
+    "Number": 2.3
+  },
+  {
+    "Code": 2011,
+    "UserId": "U011",
+    "CheckId": "C011",
+    "CheckerId": "CHK003",
+    "Branch": "Branch A",
+    "CheckDate": "2023-10-11T09:00:00Z",
+    "NeedGlass": true,
+    "Number": 4.1
+  },
+  {
+    "Code": 2012,
+    "UserId": "U012",
+    "CheckId": "C012",
+    "CheckerId": "CHK001",
+    "Branch": "Branch C",
+    "CheckDate": "2023-10-12T08:30:00Z",
+    "NeedGlass": false,
+    "Number": 2.8
+  },
+  {
+    "Code": 2013,
+    "UserId": "U013",
+    "CheckId": "C013",
+    "CheckerId": "CHK002",
+    "Branch": "Main",
+    "CheckDate": "2023-10-13T14:15:00Z",
+    "NeedGlass": true,
+    "Number": 3.7
+  },
+  {
+    "Code": 2014,
+    "UserId": "U014",
+    "CheckId": "C014",
+    "CheckerId": "CHK003",
+    "Branch": "Branch B",
+    "CheckDate": "2023-10-14T10:00:00Z",
+    "NeedGlass": false,
+    "Number": 1.9
+  },
+  {
+    "Code": 2015,
+    "UserId": "U015",
+    "CheckId": "C015",
+    "CheckerId": "CHK001",
+    "Branch": "Branch C",
+    "CheckDate": "2023-10-15T16:30:00Z",
+    "NeedGlass": true,
+    "Number": 2.1
+  }
+]
+
