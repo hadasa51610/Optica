@@ -17,7 +17,7 @@ namespace Optica.Service
             _discountRepository = discountRepository;
         }
 
-        public List<Discount> GetAll() => _discountRepository.GetAll();
+        public IEnumerable<Discount> GetAll() => _discountRepository.GetAll();
 
         public Discount GetById(string discountId) => _discountRepository.GetById(discountId);
 

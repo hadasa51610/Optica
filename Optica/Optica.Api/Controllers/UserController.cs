@@ -17,7 +17,7 @@ namespace Optica.Api.Controllers
         [HttpGet]
         public ActionResult<List<User>> Get()
         {
-            List<User> users = _userService.GetAll();
+            List<User> users = _userService.GetAll().ToList();
             return users == null ? NotFound() : users;
         }
 

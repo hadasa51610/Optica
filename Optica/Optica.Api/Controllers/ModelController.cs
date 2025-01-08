@@ -20,7 +20,7 @@ namespace Optica.Api.Controllers
         [HttpGet]
         public ActionResult<List<Model>> Get()
         {
-            List<Model> models = _modelService.GetAll();
+            List<Model> models = _modelService.GetAll().ToList();
             return models == null ? NotFound() : models;
         }
 

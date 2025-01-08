@@ -17,7 +17,7 @@ namespace Optica.Service
             _checkRepository = checkRepository;
         }
 
-        public List<Check> GetAll() => _checkRepository.GetAll();
+        public IEnumerable<Check> GetAll() => _checkRepository.GetAll();
 
         public Check GetById(string checkId) => _checkRepository.GetById(checkId);
 

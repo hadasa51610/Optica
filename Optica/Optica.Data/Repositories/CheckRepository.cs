@@ -16,29 +16,27 @@ namespace Optica.Data.Repositories
             _context = dataContext;
         }
 
-        public List<Check> GetAll() => _context.checks.ToList();
-        public Check GetById(string checkId)
-        {
-            return _context.checks.FirstOrDefault<Check>(c => c.CheckId == checkId);
-        }
+        public IEnumerable<Check> GetAll() => _context.checks.ToList();
+        public Check GetById(string checkId) => _context.checks.FirstOrDefault(c=>c.CheckId==checkId);
 
         public bool Update(string checkId, Check check)
         {
-            Check ch = _context.checks.ToList().Find(c => c.CheckId == checkId);
+            Check ch = GetById(checkId);
             if (ch == null) return false;
+
             ch.UserId = check.UserId;
             ch.Branch = check.Branch;
             ch.CheckDate = check.CheckDate;
             ch.NeedGlass = check.NeedGlass;
             ch.Number = check.Number;
+
             _context.SaveChanges();
             return true;
         }
 
         public bool Add(Check check)
         {
-            Check ch = _context.checks.FirstOrDefault<Check>(c => c.CheckId == check.CheckId);
-            if (ch != null) return true; 
+            if (GetById(check.CheckId) != null) return true;
             _context.checks.Add(check);
             _context.SaveChanges();
             return true;
@@ -46,7 +44,7 @@ namespace Optica.Data.Repositories
 
         public bool Delete(string checkId)
         {
-            Check check = _context.checks.FirstOrDefault<Check>(c => c.CheckId == checkId);
+            Check check = GetById(checkId);
             if (check == null) return false;
             _context.checks.Remove(check);
             _context.SaveChanges();

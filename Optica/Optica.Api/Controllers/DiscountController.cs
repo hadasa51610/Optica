@@ -17,7 +17,7 @@ namespace Optica.Api.Controllers
         [HttpGet]
         public ActionResult<List<Discount>> Get()
         {
-            List<Discount> discounts = _discountService.GetAll();
+            List<Discount> discounts = _discountService.GetAll().ToList();
             return discounts == null ? NotFound() : discounts;
         }
 

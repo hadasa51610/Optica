@@ -16,7 +16,7 @@ namespace Optica.Service
         {
             _modelRepository=repository;
         }
-        public List<Model> GetAll()
+        public IEnumerable<Model> GetAll()
         {
             return _modelRepository.GetAll();
         }

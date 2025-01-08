@@ -15,27 +15,27 @@ namespace Optica.Data.Repositories
         {
             _context = dataContext;
         }
-        public List<Discount> GetAll() => _context.discounts.ToList();
-        public Discount GetById(string discountId)
-        {
-            return _context.discounts.FirstOrDefault<Discount>(d => d.DiscountId == discountId);
-        }
+        public IEnumerable<Discount> GetAll() => _context.discounts.ToList();
+
+        public Discount GetById(string discountId) => _context.discounts.FirstOrDefault(d=>d.DiscountId==discountId);
+
         public bool Update(string discountId, Discount discount)
         {
-            Discount dis = _context.discounts.ToList().Find(d => d.DiscountId == discountId);
+            Discount dis = GetById(discountId);
             if (dis == null) return false;
+
             dis.SickFundId = discount.SickFundId;
             dis.ESickFundName = discount.ESickFundName;
             dis.Rules = discount.Rules;
             dis.DiscountAmount = discount.DiscountAmount;
             dis.EAge = discount.EAge;
+
             _context.SaveChanges();
             return true;
         }
         public bool Add(Discount discount)
         {
-            Discount dis = _context.discounts.ToList().FirstOrDefault<Discount>(d => d.DiscountId == discount.DiscountId);
-            if (dis != null) return true;
+            if (GetById(discount.DiscountId) != null) return true;
             _context.discounts.Add(discount);
             _context.SaveChanges();
             return true;
@@ -43,7 +43,7 @@ namespace Optica.Data.Repositories
 
         public bool Delete(string discountId)
         {
-            Discount discount = _context.discounts.ToList().FirstOrDefault<Discount>(d => d.DiscountId == discountId);
+            Discount discount = GetById(discountId);
             if (discount == null) return false;
             _context.discounts.Remove(discount);
             _context.SaveChanges();

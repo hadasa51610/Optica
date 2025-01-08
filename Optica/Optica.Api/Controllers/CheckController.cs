@@ -16,9 +16,9 @@ namespace Optica.Controllers
 
         // GET: api/<CheckController>
         [HttpGet]
-        public ActionResult<List<Check>> Get()
+        public ActionResult<IEnumerable<Check>> Get()
         {
-            List<Check> checkList = _checkService.GetAll();
+            List<Check> checkList = _checkService.GetAll().ToList();
             return checkList == null ? NotFound() : checkList;
         }
 

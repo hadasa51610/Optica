@@ -8,7 +8,7 @@ using Optica.Data;
 
 #nullable disable
 
-namespace Optica.Data.Migrations
+namespace Optica.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -22,10 +22,28 @@ namespace Optica.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ModelOrder", b =>
+                {
+                    b.Property<int>("ModelsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersOrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ModelsId", "OrdersOrderId");
+
+                    b.HasIndex("OrdersOrderId");
+
+                    b.ToTable("ModelOrder");
+                });
+
             modelBuilder.Entity("Optica.Core.Entites.Check", b =>
                 {
-                    b.Property<string>("CheckId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Branch")
                         .IsRequired()
@@ -34,12 +52,13 @@ namespace Optica.Data.Migrations
                     b.Property<DateTime>("CheckDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CheckerId")
+                    b.Property<string>("CheckId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
+                    b.Property<string>("CheckerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("NeedGlass")
                         .HasColumnType("bit");
@@ -51,21 +70,25 @@ namespace Optica.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CheckId");
+                    b.HasKey("Id");
 
-                    b.ToTable("checks");
+                    b.ToTable("Check");
                 });
 
             modelBuilder.Entity("Optica.Core.Entites.Discount", b =>
                 {
-                    b.Property<string>("DiscountId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<double>("DiscountAmount")
                         .HasColumnType("float");
+
+                    b.Property<string>("DiscountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EAge")
                         .HasColumnType("int");
@@ -81,18 +104,18 @@ namespace Optica.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DiscountId");
+                    b.HasKey("Id");
 
-                    b.ToTable("discounts");
+                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("Optica.Core.Entites.Model", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Code")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -108,6 +131,10 @@ namespace Optica.Data.Migrations
                     b.Property<int>("GlassTarget")
                         .HasColumnType("int");
 
+                    b.Property<string>("ModelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Scop")
                         .HasColumnType("float");
 
@@ -117,7 +144,7 @@ namespace Optica.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("models");
+                    b.ToTable("Model");
                 });
 
             modelBuilder.Entity("Optica.Core.Entites.Order", b =>
@@ -127,6 +154,9 @@ namespace Optica.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
+
+                    b.Property<int>("DiscountId")
+                        .HasColumnType("int");
 
                     b.Property<int>("EPayment")
                         .HasColumnType("int");
@@ -151,19 +181,25 @@ namespace Optica.Data.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("orders");
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Optica.Core.Entites.User", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -175,12 +211,12 @@ namespace Optica.Data.Migrations
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CheckId")
+                        .HasColumnType("int");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
 
                     b.Property<int>("ESickFund")
                         .HasColumnType("int");
@@ -200,9 +236,77 @@ namespace Optica.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("users");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckId")
+                        .IsUnique();
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ModelOrder", b =>
+                {
+                    b.HasOne("Optica.Core.Entites.Model", null)
+                        .WithMany()
+                        .HasForeignKey("ModelsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Optica.Core.Entites.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Optica.Core.Entites.Order", b =>
+                {
+                    b.HasOne("Optica.Core.Entites.Discount", "Discount")
+                        .WithMany("Orders")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Optica.Core.Entites.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Optica.Core.Entites.User", b =>
+                {
+                    b.HasOne("Optica.Core.Entites.Check", "Check")
+                        .WithOne("User")
+                        .HasForeignKey("Optica.Core.Entites.User", "CheckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Check");
+                });
+
+            modelBuilder.Entity("Optica.Core.Entites.Check", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Optica.Core.Entites.Discount", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Optica.Core.Entites.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

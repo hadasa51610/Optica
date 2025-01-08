@@ -15,20 +15,15 @@ namespace Optica.Data.Repositories
         {
             _context = context;
         }
-        public List<User> GetAll()
-        {
-            return _context.users.ToList();
-        }
+        public IEnumerable<User> GetAll() => _context.users.ToList();
 
-        public User GetById(string userId)
-        {
-            return _context.users.FirstOrDefault<User>((u) => u.UserId == userId);
-        }
+        public User GetById(string id) => _context.users.FirstOrDefault(u => u.UserId == id);
 
         public bool Update(string userId, User user)
         {
-            User updateUser = _context.users.ToList().Find((u) => u.UserId == userId);
+            User updateUser = GetById(userId);
             if (updateUser == null) return false;
+
             updateUser.Address = user.Address;
             updateUser.Age = user.Age;
             updateUser.BirthDay = user.BirthDay;
@@ -38,13 +33,14 @@ namespace Optica.Data.Repositories
             updateUser.Name = user.Name;
             updateUser.Mail = user.Mail;
             updateUser.Phone = user.Phone;
+
             _context.SaveChanges();
             return true;
         }
 
         public bool Delete(string userId)
         {
-            User user = _context.users.ToList().FirstOrDefault<User>(u => u.UserId == userId);
+            User user = GetById(userId);
             if (user == null) return false;
             _context.users.Remove(user);
             _context.SaveChanges();
@@ -53,8 +49,7 @@ namespace Optica.Data.Repositories
 
         public bool Add(User user)
         {
-            User user1 = _context.users.ToList().FirstOrDefault<User>(u => u.UserId == user.UserId);
-            if (user != null) return true;
+            if (GetById(user.UserId) != null) return true;
             _context.users.Add(user);
             _context.SaveChanges();
             return true;

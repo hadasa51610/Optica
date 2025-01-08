@@ -8,7 +8,7 @@ namespace Optica.Core.IServices
 {
     public interface IService<T>
     {
-        List<T> GetAll();
+        IEnumerable<T> GetAll();
         T GetById(string id);
         bool Update(string id, T obj);
         bool Delete(string id);
