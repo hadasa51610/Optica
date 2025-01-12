@@ -10,8 +10,8 @@ namespace Optica.Core.IServices
     {
         IEnumerable<T> GetAll();
         T GetById(string id);
-        bool Update(string id, T obj);
+        T Update(string id, T obj);
         bool Delete(string id);
-        bool Add(T obj);
+        T Add(T obj);
     }
 }

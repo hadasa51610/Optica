@@ -31,31 +31,30 @@ namespace Optica.Api.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public ActionResult Post([FromBody] User user)
+        public ActionResult<User> Post([FromBody] User user)
         {
             if (user == null) return BadRequest("User data is required.");
-            if (_userService.Add(user)) return Ok();
-            return StatusCode(500, "Failed to create the user.");
+            User u = _userService.Add(user);
+            return u == null ? NotFound() : u;
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{userId}")]
-        public ActionResult Put(string userId, [FromBody] User user)
+        public ActionResult<User> Put(string userId, [FromBody] User user)
         {
             if (userId == null) return BadRequest();
             if (_userService.GetById(userId) == null) return NotFound();
-            if (_userService.Update(userId, user)) return Ok();
-            return StatusCode(500, "Failed to update the user.");
+            User u = _userService.Update(userId, user);
+            return u == null ? NotFound() : u;
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{userId}")]
-        public ActionResult Delete(string userId)
+        public ActionResult<bool> Delete(string userId)
         {
             if (userId == null) return BadRequest();
             if (_userService.GetById(userId) == null) return NotFound();
-            if (_userService.Delete(userId)) return Ok();
-            return StatusCode(500, "Failed to delete the user.");
+            return _userService.Delete(userId);
         }
     }
 }

@@ -11,20 +11,35 @@ namespace Optica.Service
 {
     public class CheckService : IService<Check>
     {
-        private readonly IRepository<Check> _checkRepository;
-        public CheckService(IRepository<Check> checkRepository)
+        private readonly IRepositoryManager _checkRepository;
+        public CheckService(IRepositoryManager checkRepository)
         {
             _checkRepository = checkRepository;
         }
 
-        public IEnumerable<Check> GetAll() => _checkRepository.GetAll();
+        public IEnumerable<Check> GetAll() => _checkRepository._checks.GetFull();
 
-        public Check GetById(string checkId) => _checkRepository.GetById(checkId);
+        public Check GetById(string checkId) => _checkRepository._checks.GetById(checkId);
 
-        public bool Update(string checkId, Check check) => _checkRepository.Update(checkId, check);
+        public Check Update(string checkId, Check check)
+        {
+            Check c = _checkRepository._checks.Update(checkId, check);
+            if (c != null) _checkRepository.Save();
+            return c;
+        }
 
-        public bool Add(Check check) => _checkRepository.Add(check);
+        public Check Add(Check check)
+        {
+            Check c = _checkRepository._checks.Add(check);
+            if (c != null) _checkRepository.Save();
+            return c;
+        }
 
-        public bool Delete(string checkId) => _checkRepository.Delete(checkId);
+        public bool Delete(string checkId)
+        {
+            bool deleted = _checkRepository._checks.Delete(checkId);
+            if (deleted) _checkRepository.Save();
+            return deleted;
+        }
     }
 }

@@ -34,31 +34,30 @@ namespace Optica.Api.Controllers
 
         // POST api/<ModelController>
         [HttpPost]
-        public ActionResult Post([FromBody] Model model)
+        public ActionResult<Model> Post([FromBody] Model model)
         {
             if (model == null) return BadRequest("Model data is required.");
-            if (_modelService.Add(model)) return Ok();
-            return StatusCode(500, "Failed to create the model.");
+            Model m = _modelService.Add(model);
+            return m == null ? NotFound() : m;
         }
 
         // PUT api/<ModelController>/5
         [HttpPut("{modelId}")]
-        public ActionResult Put(string modelId, [FromBody] Model model)
+        public ActionResult<Model> Put(string modelId, [FromBody] Model model)
         {
             if (modelId == null) return BadRequest();
             if (_modelService.GetById(modelId) == null) return NotFound();
-            if (_modelService.Update(modelId, model)) return Ok();
-            return StatusCode(500, "Failed to update the model.");
+            Model m = _modelService.Update(modelId, model);
+            return m == null ? NotFound() : m;
         }
 
         // DELETE api/<ModelController>/5
         [HttpDelete("{modelId}")]
-        public ActionResult Delete(string modelId)
+        public ActionResult<bool> Delete(string modelId)
         {
             if (modelId == null) return BadRequest();
             if (_modelService.GetById(modelId) == null) return NotFound();
-            if (_modelService.Delete(modelId)) return Ok();
-            return StatusCode(500, "Failed to delete the model.");
+            return _modelService.Delete(modelId);
         }
     }
 }

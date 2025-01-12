@@ -31,31 +31,30 @@ namespace Optica.Api.Controllers
 
         // POST api/<DiscountController>
         [HttpPost]
-        public ActionResult Post([FromBody] Discount dis)
+        public ActionResult<Discount> Post([FromBody] Discount dis)
         {
             if (dis == null) return BadRequest("Discount data is required.");
-            if(_discountService.Add(dis)) return Ok();
-            return StatusCode(500, "Failed to create the discount.");
+            Discount discount = _discountService.Add(dis);
+            return discount == null ? NotFound() : discount;
         }
 
         // PUT api/<DiscountController>/5
         [HttpPut("{discountId}")]
-        public ActionResult Put(string discountId, [FromBody] Discount dis)
+        public ActionResult<Discount> Put(string discountId, [FromBody] Discount dis)
         {
             if (discountId == null) return BadRequest();
             if (_discountService.GetById(discountId) == null) return NotFound();
-            if(_discountService.Update(discountId, dis)) return Ok();
-            return StatusCode(500, "Failed to update the discount.");
+            Discount discount = _discountService.Update(discountId, dis);
+            return discount == null ? NotFound() : discount;
         }
 
         // DELETE api/<DiscountController>/5
         [HttpDelete("{discountId}")]
-        public ActionResult Delete(string discountId)
+        public ActionResult<bool> Delete(string discountId)
         {
-            if(discountId == null) return BadRequest();
+            if (discountId == null) return BadRequest();
             if (_discountService.GetById(discountId) == null) return NotFound();
-            if(_discountService.Delete(discountId)) return Ok();
-            return StatusCode(500, "Failed to delete the discount.");
+            return _discountService.Delete(discountId);
         }
     }
 }

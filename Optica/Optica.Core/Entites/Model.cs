@@ -19,7 +19,7 @@ namespace Optica.Core.Entites
         public string ModelId { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
-        public double Scop { get; set; }
+        public double Scop { get; set; }//היקף המשקף
         public string Shape { get; set; }
         public Sort GlassSort { get; set; }
         public Target GlassTarget { get; set; }

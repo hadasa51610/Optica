@@ -13,7 +13,7 @@ namespace Optica.Api.Controllers
         private readonly IService<Order> _orderService;
         public OrderController(IService<Order> orderService)
         {
-            _orderService=orderService;
+            _orderService = orderService;
         }
         // GET: api/<OrderController>
         [HttpGet]
@@ -33,31 +33,30 @@ namespace Optica.Api.Controllers
 
         // POST api/<OrderController>
         [HttpPost]
-        public ActionResult Post([FromBody] Order order)
+        public ActionResult<Order> Post([FromBody] Order order)
         {
             if (order == null) return BadRequest("Order data is required.");
-            if (_orderService.Add(order)) return Ok();
-            return StatusCode(500, "Failed to create the order.");
+            Order o = _orderService.Add(order);
+            return o == null ? NotFound() : o;
         }
 
         // PUT api/<OrderController>/5
         [HttpPut("{orderCode}")]
-        public ActionResult Put(string orderCode, [FromBody] Order order)
+        public ActionResult<Order> Put(string orderCode, [FromBody] Order order)
         {
             if (orderCode == null) return BadRequest();
             if (_orderService.GetById(orderCode) == null) return NotFound();
-            if (_orderService.Update(orderCode, order)) return Ok();
-            return StatusCode(500, "Failed to update the order.");
+            Order o = _orderService.Update(orderCode, order);
+            return o == null ? NotFound() : o;
         }
 
         // DELETE api/<OrderController>/5
         [HttpDelete("{orderCode}")]
-        public ActionResult Delete(string orderCode)
+        public ActionResult<bool> Delete(string orderCode)
         {
             if (orderCode == null) return BadRequest();
             if (_orderService.GetById(orderCode) == null) return NotFound();
-            if (_orderService.Delete(orderCode)) return Ok();
-            return StatusCode(500, "Failed to delete the order.");
+            return _orderService.Delete(orderCode);
         }
     }
 }

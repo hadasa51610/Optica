@@ -32,31 +32,30 @@ namespace Optica.Controllers
 
         // POST api/<CheckController>
         [HttpPost]
-        public ActionResult Post([FromBody] Check check)
+        public ActionResult<Check> Post([FromBody] Check check)
         {
             if (check == null) return BadRequest("Check data is required.");
-            if(_checkService.Add(check)) return Ok();
-            return StatusCode(500, "Failed to create the check.");
+            Check c = _checkService.Add(check);
+            return c == null ? NotFound() : c;
         }
 
         // PUT api/<CheckController>/5
         [HttpPut("{checkId}")]
-        public ActionResult Put(string checkId, [FromBody] Check check)
+        public ActionResult<Check> Put(string checkId, [FromBody] Check check)
         {
-            if(check == null) return BadRequest();
+            if (check == null) return BadRequest();
             if (_checkService.GetById(checkId) == null) return NotFound();
-            if (_checkService.Update(checkId, check)) return Ok();
-            return StatusCode(500, "Failed to update the check.");
+            Check c = _checkService.Update(checkId, check);
+            return c == null ? NotFound() : c;
         }
 
         // DELETE api/<CheckController>/5
         [HttpDelete("{checkId}")]
-        public ActionResult Delete(string checkId)
+        public ActionResult<bool> Delete(string checkId)
         {
-            if(checkId == null) return BadRequest();
+            if (checkId == null) return BadRequest();
             if (_checkService.GetById(checkId) == null) return NotFound();
-            if(_checkService.Delete(checkId)) return Ok();
-            return StatusCode(500, "Failed to delete the check.");
+            return _checkService.Delete(checkId);
         }
     }
 }

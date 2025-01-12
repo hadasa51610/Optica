@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Optica.Core.IRepositories
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        T GetById(string id);
-        bool Update(string id, T obj);
+        T? GetById(string id);
+        T Update(string id, T entity);
         bool Delete(string id);
-        bool Add(T obj);
+        T Add(T entity);
     }
 }

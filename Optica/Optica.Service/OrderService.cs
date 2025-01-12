@@ -11,34 +11,34 @@ namespace Optica.Service
 {
     public class OrderService : IService<Order>
     {
-        private readonly IRepository<Order> _orderRepository;
-        public OrderService(IRepository<Order> orderRepository)
+        private readonly IRepositoryManager _orderRepository;
+        public OrderService(IRepositoryManager orderRepository)
         {
             _orderRepository = orderRepository;
         }
-        public IEnumerable<Order> GetAll()
-        {
-            return _orderRepository.GetAll();
-        }
+        public IEnumerable<Order> GetAll() => _orderRepository._orders.GetFull();
 
-        public Order GetById(string orderCode)
-        {
-            return _orderRepository.GetById(orderCode);
-        }
+        public Order GetById(string orderCode) => _orderRepository._orders.GetById(orderCode);
 
-        public bool Update(string orderCode, Order order)
+        public Order Update(string orderCode, Order order)
         {
-            return _orderRepository.Update(orderCode, order);
+            Order o = _orderRepository._orders.Update(orderCode, order);
+            if (o != null) _orderRepository.Save();
+            return o;
         }
 
         public bool Delete(string orderCode)
         {
-            return _orderRepository.Delete(orderCode);
+            bool deleted = _orderRepository._orders.Delete(orderCode);
+            if (deleted) _orderRepository.Save();
+            return deleted;
         }
 
-        public bool Add(Order order)
+        public Order Add(Order order)
         {
-            return _orderRepository.Add(order);
+            Order o = _orderRepository._orders.Add(order);
+            if (o != null) _orderRepository.Save();
+            return o;
         }
     }
 }

@@ -9,35 +9,36 @@ using System.Threading.Tasks;
 
 namespace Optica.Service
 {
-    public class UserService:IService<User>
+    public class UserService : IService<User>
     {
-        private readonly IRepository<User> _userRepository;
-        public UserService(IRepository<User> userRepository)
+        private readonly IRepositoryManager _managerRepository;
+        public UserService(IRepositoryManager userRepository)
         {
-            _userRepository = userRepository;
+            _managerRepository = userRepository;
         }
-        public IEnumerable<User> GetAll()
-        {
-            return _userRepository.GetAll();
-        }
-        public User GetById(string userId)
-        {
-            return _userRepository.GetById(userId);
-        }
+        public IEnumerable<User> GetAll() => _managerRepository._users.GetFull();
 
-        public bool Update(string userId, User user)
+        public User GetById(string userId) => _managerRepository._users.GetById(userId);
+
+        public User Update(string userId, User user)
         {
-            return _userRepository.Update(userId, user);
+            User u = _managerRepository._users.Update(userId, user);
+            if (u != null) _managerRepository.Save();
+            return u;
         }
 
         public bool Delete(string userId)
         {
-            return _userRepository.Delete(userId);
+            bool deleted = _managerRepository._users.Delete(userId);
+            if (deleted) _managerRepository.Save();
+            return deleted;
         }
 
-        public bool Add(User user)
+        public User Add(User user)
         {
-            return _userRepository.Add(user);
+            User u = _managerRepository._users.Add(user);
+            if (u != null) _managerRepository.Save();
+            return u;
         }
     }
 }

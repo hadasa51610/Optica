@@ -11,34 +11,34 @@ namespace Optica.Service
 {
     public class ModelService : IService<Model>
     {
-        private readonly IRepository<Model> _modelRepository;
-        public ModelService(IRepository<Model> repository)
+        private readonly IRepositoryManager _modelRepository;
+        public ModelService(IRepositoryManager repository)
         {
-            _modelRepository=repository;
+            _modelRepository = repository;
         }
-        public IEnumerable<Model> GetAll()
+        public IEnumerable<Model> GetAll() => _modelRepository._models.GetFull();
+
+        public Model GetById(string modelId) => _modelRepository._models.GetById(modelId);
+
+        public Model Add(Model model)
         {
-            return _modelRepository.GetAll();
+            Model m = _modelRepository._models.Add(model);
+            if (m != null) _modelRepository.Save();
+            return m;
         }
 
-        public Model GetById(string modelId)
+        public Model Update(string id, Model model)
         {
-            return _modelRepository.GetById(modelId);
-        }
-
-        public bool Add(Model model)
-        {
-            return _modelRepository.Add(model);
-        }
-
-        public bool Update(string id, Model model)
-        {
-            return _modelRepository.Update(id, model);
+            Model m = _modelRepository._models.Update(id, model);
+            if (m != null) _modelRepository.Save();
+            return m;
         }
 
         public bool Delete(string modelId)
         {
-            return _modelRepository.Delete(modelId);
+            bool deleted = _modelRepository._models.Delete(modelId);
+            if (deleted) _modelRepository.Save();
+            return deleted;
         }
     }
 }

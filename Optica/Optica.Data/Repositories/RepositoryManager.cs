@@ -1,4 +1,5 @@
-﻿using Optica.Core.IRepositories;
+﻿using Optica.Core.Entites;
+using Optica.Core.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,29 @@ namespace Optica.Data.Repositories
     public class RepositoryManager : IRepositoryManager
     {
         private readonly DataContext _context;
-       // public IRepositories<> Users { get; }
+        public IUserRepository _users { get; }
 
-        //public RepositoryManager(DataContext context, IUserRepository userRepository)
-        //{
-        //    _context = context;
-        //    Users = userRepository;
-        //}
+        public ICheckRepository _checks { get; }
 
-        //public void Save()
-        //{
-        //    _context.SaveChanges();
-        //}
+        public IDiscountRepository _discounts { get; }
+
+        public IModelRepository _models { get; }
+
+        public IOrderRepository _orders { get; }
+
+        public RepositoryManager(DataContext context, IUserRepository uRepository, IOrderRepository oRepository, ICheckRepository cRepository, IModelRepository mRepository, IDiscountRepository dRepository)
+        {
+            _context = context;
+            _users = uRepository;
+            _checks = cRepository;
+            _discounts = dRepository;
+            _models = mRepository;
+            _orders = oRepository;
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
     }
 }
